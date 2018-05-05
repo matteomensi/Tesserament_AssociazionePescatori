@@ -80,6 +80,10 @@ public class Tessera
 		this.info = info;
 	}
 	
-	
+	public String toString()
+	{
+		return getCodiceIdentificativo()+" "+getNome()+" "+getCognome()+" "+
+				getCodiceFiscale()+" "+getDataNascita()+" "+getInfo(); 
+	}
 
 }

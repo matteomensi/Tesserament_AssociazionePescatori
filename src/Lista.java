@@ -1,18 +1,16 @@
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
-public class Festa implements Serializable
+public class Lista implements Serializable
 {
-
 	private Nodo head;
 	private int elementi;
 	
-	public Festa()
+	public Lista()
 	{
 		head=null;
 		elementi=0;
@@ -54,7 +52,6 @@ public class Festa implements Serializable
 	
 	public void inserisci(Tessera persona)
 	{
-		
 		Nodo p=creaNodo(persona, head);
 		head=p;
 		elementi++;
@@ -136,7 +133,7 @@ public class Festa implements Serializable
 		return p.getInfo().toString();		
 	}
 	
-	public Tessera getInvitato (int posizione) throws TesseraException
+	public Tessera getTessera (int posizione) throws TesseraException
 	{
 		if (elementi==0)
 			throw new TesseraException("Lista vuota");
@@ -156,17 +153,17 @@ public class Festa implements Serializable
 		
 		for (int i = 1; i <= getElementi(); i++) 
 		{
-			persona=getInvitato(i);
-			personaCSV=persona.getNome()+";"+persona.getSesso()+";"+persona.getTelefono()+";";
+			persona=getTessera(i);
+			personaCSV=persona.getCodiceIdentificativo()+";"+persona.getNome()+";"+persona.getCognome()+";"
+						+persona.getCodiceFiscale()+";"+persona.getDataNascita()+";"+persona.getInfo();
 			file.toFile(personaCSV);
 		}
 		file.closeFile();
-		
 	}
 
-	public Festa importaCSV (String nomeFile) throws IOException, TesseraException
+	public Lista importaCSV (String nomeFile) throws IOException, TesseraException
 	{
-		Festa festa=new Festa();
+		Lista lista=new Lista();
 		TextFile file=new TextFile(nomeFile,'R');
 		String rigaLetta;
 		String[] elementiPersona;
@@ -178,8 +175,8 @@ public class Festa implements Serializable
 				{
 					rigaLetta=file.fromFile();
 					elementiPersona=rigaLetta.split(";");
-					persona=new Tessera(elementiPersona[0],elementiPersona[1].charAt(0),elementiPersona[2]);
-					festa.inserisci(persona);
+					persona=new Tessera(Integer.parseInt(elementiPersona[0]),elementiPersona[1],elementiPersona[2],elementiPersona[3],elementiPersona[4],elementiPersona[5]);
+					lista.inserisci(persona);
 				}
 				
 			} 
@@ -191,11 +188,10 @@ public class Festa implements Serializable
 					throw new TesseraException(e.toString());
 			}
 		
-			return festa;		
-			
+			return lista;	
 	}
 	
-	public void salvaFesta(String nomeFile) throws IOException
+	public void salvaLista(String nomeFile) throws IOException
 	{
 		FileOutputStream file =new FileOutputStream(nomeFile);
 		ObjectOutputStream writer=new ObjectOutputStream(file);
@@ -204,16 +200,16 @@ public class Festa implements Serializable
 		file.close();
 	}
 	
-	public Festa caricaFesta (String nomeFile) throws IOException, ClassNotFoundException
+	public Lista caricaLista (String nomeFile) throws IOException, ClassNotFoundException
 	{
 		FileInputStream file=new FileInputStream(nomeFile);
 		ObjectInputStream reader= new ObjectInputStream(file);
 		
-		Festa festa;
+		Lista lista;
 		
-		festa=(Festa)(reader.readObject());
+		lista=(Lista)(reader.readObject());
 		file.close();
-		return festa;
+		return lista;
 	}
-	
+
 }

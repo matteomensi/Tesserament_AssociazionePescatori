@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Nodo 
+public class Nodo implements Serializable
 {
 	private Tessera info;
 	private Nodo link;

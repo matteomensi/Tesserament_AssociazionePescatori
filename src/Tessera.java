@@ -1,5 +1,6 @@
+import java.io.Serializable;
 
-public class Tessera 
+public class Tessera implements Serializable
 {
 	//Attributi
 	private int codiceIdentificativo;

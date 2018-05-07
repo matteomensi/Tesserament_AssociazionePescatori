@@ -1,6 +1,5 @@
 import java.io.*;
 
-
 public class TextFile 
 {
 	private char mode;
@@ -22,8 +21,6 @@ public class TextFile
 			reader= new BufferedReader(f1);
 			this.mode='R';
 		}
-		
-		
 	}
 	
 	public void toFile(String line) throws TesseraException, IOException

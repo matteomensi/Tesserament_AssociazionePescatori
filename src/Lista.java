@@ -55,6 +55,18 @@ public class Lista implements Serializable
 		Nodo p=creaNodo(persona, head);
 		head=p;
 		elementi++;
+		try 
+		{
+			esportaCSV("lista.txt");
+		} 
+		catch (IOException e) 
+		{
+			System.out.println("File non trovato");
+		} 
+		catch (TesseraException e) 
+		{
+			e.toString();
+		}
 	}
 	
 	public String toString()
@@ -96,6 +108,15 @@ public class Lista implements Serializable
 	
 	public void eliminaInPosizione(int posizione) throws TesseraException
 	{
+		try 
+		{
+			esportaCSVeliminati("eliminati.txt",posizione);
+		} 
+		catch (IOException e) 
+		{
+			System.out.println("File non trovato");
+		}
+		
 		if (elementi==0)
 			throw new TesseraException("Lista vuota");
 		
@@ -158,6 +179,20 @@ public class Lista implements Serializable
 						+persona.getCodiceFiscale()+";"+persona.getDataNascita()+";"+persona.getInfo();
 			file.toFile(personaCSV);
 		}
+		file.closeFile();
+	}
+	
+	public void esportaCSVeliminati (String nomeFile, int posizione) throws IOException, TesseraException
+	{
+		TextFile file= new TextFile (nomeFile,'W');
+		String personaCSV;
+		Tessera persona;
+		
+			persona=getTessera(posizione);
+			personaCSV=persona.getCodiceIdentificativo()+";"+persona.getNome()+";"+persona.getCognome()+";"
+						+persona.getCodiceFiscale()+";"+persona.getDataNascita()+";"+persona.getInfo();
+			file.toFile(personaCSV);
+		
 		file.closeFile();
 	}
 

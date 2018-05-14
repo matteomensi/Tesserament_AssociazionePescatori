@@ -7,45 +7,14 @@ public class MainClass
 	static ConsoleInput tastiera=new ConsoleInput();
 	public static void main(String[] args) throws TesseraException, NumberFormatException, IOException 
 	{
-		
-/*	Lista l1=new Lista();
-		LocalDate data1 = LocalDate.of(1999, 7, 25);
-		LocalDate data2 = LocalDate.of(2998, 6, 19);
-		LocalDate data3 = LocalDate.of(1170, 10, 26);
-		
-		Tessera t1=new Tessera(1,"Matteo","Mensi","MNSMTT110500",data1,"si");
-		Tessera t2=new Tessera(2,"Marco","Manenti","MNTMRC100605",data2,"no");
-		Tessera t3=new Tessera(3,"Aurelia","Lullu","ARLLLL131167",data3,"si");
-		
-		l1.inserisci(t1);
-		l1.inserisci(t2);
-		l1.inserisci(t3);
-		
-		System.out.println(l1.visita(1));
-		System.out.println(l1.visita(2));
-		System.out.println(l1.visita(3));
-		
-		int x;
-		System.out.println("Inserisci il codice della tesera che vuoi eliminare");
-		ConsoleInput a=new ConsoleInput();
-		
-		x=a.readInt();
-		
-		for (int i = 0; i < l1.getElementi(); i++) 
-		{
-			if(x==l1.getTessera(i).getCodiceIdentificativo())
-				l1.eliminaInPosizione(i);
-				
-		}
-		*/
 		String[] elencoFunzioni=new String[8];
 		elencoFunzioni[0]="0-->Esci";
 		elencoFunzioni[1]="1-->Registra nuova tessera";
 		elencoFunzioni[2]="2-->Visualizza in ordine alfabetico in base al nome";
 		elencoFunzioni[3]="3-->Visualizza ordine anzianita";
-		elencoFunzioni[4]="4-->Elimina tessera";
-		elencoFunzioni[5]="5-->";
-		elencoFunzioni[6]="6-->";
+		elencoFunzioni[4]="4-->Cerca tesserato";
+		elencoFunzioni[5]="5-->Elimina tessera";
+		elencoFunzioni[6]="6-->Modifica quota";
 	
 		
 		Lista lista=new Lista();
@@ -66,6 +35,8 @@ public class MainClass
 		
 		Menu menu=new Menu(elencoFunzioni);
 		int scelta=0;
+		
+		
 		
 		do 
 		{
@@ -106,7 +77,17 @@ public class MainClass
 					dataNascita=LocalDate.of(anno,m,g);
 					t.setDataNascita(dataNascita);
 					lista.inserisci(t);
-					System.out.println("tessera aggiunto");
+					
+					/*for (int i = 1 ; i < lista.getElementi(); i++) 
+					{
+						if (lista.getTessera(i).getNome().compareTo(t.getNome())==0 && lista.getTessera(i).getCognome().compareTo(t.getCognome())==0) 
+						{
+							lista.eliminaInPosizione(1);
+							System.out.println("è già stata eliminata una tessera con questo nome");
+						}
+					}*/
+					
+					System.out.println("tessera aggiunta");
 					lista.salvaLista("tessera.bin");
 					System.out.println("salvataggio modifica avvenuta con successo");
 				} 
@@ -144,9 +125,9 @@ public class MainClass
 				{
 					Tessera[] ArrayLista=lista.convertiLista();
 					ArrayLista=Lista.OrdinaAnzianita(ArrayLista);
-					Lista listaAnzianita=new Lista();
-					listaAnzianita.convertiTessera(ArrayLista);
-					System.out.println(listaAnzianita.toString());
+					Lista listaAlfabetico=new Lista();
+					listaAlfabetico.convertiTessera(ArrayLista);
+					System.out.println(listaAlfabetico.toString());
 					
 				}
 				catch (TesseraException e)
@@ -156,6 +137,19 @@ public class MainClass
 			}
 			break;
 			case 4:
+			{
+				String x,y;
+				System.out.println("Inserisci il nome");
+				ConsoleInput a=new ConsoleInput();
+				x=a.readString();
+				System.out.println("Inserisci il cognome");
+				ConsoleInput b=new ConsoleInput();
+				y=b.readString();
+				
+				lista.visualizzaNome(x, y);
+			}
+			break;
+			case 5:
 			{
 				int x;
 				System.out.println("Inserisci il codice della tesera che vuoi eliminare");
@@ -172,11 +166,16 @@ public class MainClass
 						System.out.println("Salvataggio modifica avvenuta con successo");
 					}
 				}
+				
 			}
 			break;
-			case 5:
+			case 6:
 			{
-			
+				int x;
+				System.out.println("Inserisci il valore della quota");
+				ConsoleInput a=new ConsoleInput();
+				x=a.readInt();
+				lista.getTessera(1).setQuota(x);
 			}
 			break;
 			

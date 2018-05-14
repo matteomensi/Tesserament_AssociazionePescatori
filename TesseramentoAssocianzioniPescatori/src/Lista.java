@@ -4,23 +4,43 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.time.LocalDate;
 
+/**
+ * La classe rappresenta una lista di tessere. Ogni lista è composta da tessere.
+ *  Gli attributi sono: "elemnti" che indica il numero di elementi della lista e "head" di tipo Nodo che indica 
+ *  al primo elemento della lista.
+ * @author Matteo Mensi
+ *
+ */
 public class Lista implements Serializable
 {
 	private Nodo head;
 	private int elementi;
 	
+	/**
+	 * Costruttore
+	 */
 	public Lista()
 	{
 		head=null;
 		elementi=0;
 	}
 	
+	/**
+	 * Metodo getter che restituisce gli elementi di una lista
+	 */
 	public int getElementi()
 	{
 		return elementi;
 	}
 	
+	/**
+	 * Consente di creare un Nodo.
+	 * @param persona La persona tesserata
+	 * @param link Il link che collega
+	 * @return nodo Il nodo
+	 */
 	private Nodo creaNodo(Tessera persona, Nodo link)
 	{
 		Nodo nodo= new Nodo(persona);
@@ -28,6 +48,10 @@ public class Lista implements Serializable
 		return nodo;
 	}
 	
+	/**
+	 * Metodo getter che restituisce il nodo "p"
+	 * @return p Il nodo p
+	 */
 	private Nodo getLinkPosizione(int posizione) throws TesseraException
 	{
 		
@@ -50,13 +74,30 @@ public class Lista implements Serializable
 		return p;
 	}
 	
-	public void inserisci(Tessera persona)
+	/**
+	 * Consente di inserire una tessera in cima alla lista.
+	 * @param persona La persona tesserata
+	 */
+	public void inserisci(Tessera persona) throws TesseraException
 	{
-		int quota=30;
 		Nodo p=creaNodo(persona, head);
 		head=p;
 		elementi++;
-		System.out.println("La quota annule è di "+quota+"€");
+		System.out.println("La quota annule è di "+this.getTessera(1).getQuota()+"€");
+		
+		/*try 
+		{
+			importaCSV("eliminati.txt");
+			
+		} 
+		catch (IOException e1) 
+		{
+			System.out.println("File non trovato");
+		} 
+		catch (TesseraException e1) 
+		{
+			e1.toString();
+		}*/
 		
 		try 
 		{
@@ -72,6 +113,9 @@ public class Lista implements Serializable
 		}
 	}
 	
+	/**
+	 * Restituisce l'oggetto istanziato come stringa
+	 */
 	public String toString()
 	{
 		String risultato="Head";
@@ -86,6 +130,11 @@ public class Lista implements Serializable
 		return risultato;
 	}
 	
+	/**
+	 * Consente di eliminare una tessera in testa alla lista.
+	 * @param posizione La posizione della tessera nella lista
+	 * @param link Il link che collega
+	 */
 	public void eliminaInTesta(int posizione) throws TesseraException
 	{
 		if (elementi==0)
@@ -103,6 +152,10 @@ public class Lista implements Serializable
 		}
 	}
 	
+	/**
+	 * Consente di eliminare una tessera in coda alla lista.
+	 * @param posizione La posizione della tessera nella lista
+	 */
 	public void eliminaInCoda(int posizione) throws TesseraException
 	{
 		if (elementi==0)
@@ -127,6 +180,10 @@ public class Lista implements Serializable
 		}
 	}
 	
+	/**
+	 * Consente di eliminare una tessera in una posizione della lista.
+	 * @param posizione La posizione della tessera nella lista
+	 */
 	public void eliminaInPosizione(int posizione) throws TesseraException
 	{
 		if (elementi==0)
@@ -162,18 +219,11 @@ public class Lista implements Serializable
 		}
 	}
 	
-	public String visita (int posizione) throws TesseraException
-	{
-		if (elementi==0)
-			throw new TesseraException("Lista vuota");
-		
-		if (posizione<=0 || posizione>elementi)
-			throw new TesseraException("Posizione non valida");
-		
-		Nodo p=getLinkPosizione(posizione);
-		return p.getInfo().toString();		
-	}
-	
+	/**
+	 * Metodo getter che restituisce la tessera da una lista
+	 * @param posizione La posizione della tessera nella lista
+	 * @return le informazioni del nodo p
+	 */
 	public Tessera getTessera (int posizione) throws TesseraException
 	{
 		if (elementi==0)
@@ -186,6 +236,10 @@ public class Lista implements Serializable
 		return p.getInfo();		
 	}
 	
+	/**
+	 * Consente di covertire la lista in un array.
+	 * @return arraylista La lista convertita in un array
+	 */
 	public Tessera[] convertiLista() throws TesseraException
 	{
 		Nodo n;
@@ -199,7 +253,11 @@ public class Lista implements Serializable
 	
 	}
 	
-	public void convertiTessera(Tessera[] tessera)
+	/**
+	 * Consente di covertire la tessera di una lista.
+	 * @param tessera Array tessera
+	 */
+	public void convertiTessera(Tessera[] tessera) throws TesseraException
 	{
 		for (int i = tessera.length; i >0; i--) 
 		{
@@ -207,7 +265,13 @@ public class Lista implements Serializable
 		}
 	}
 	
-	
+	/**
+	 * Consente di scambiare di posizione due array tesseara.
+	 * @param array Array tessera
+	 * @param pos1 posizione dell'arrey 1
+	 * @param pos2 posizione dell'arrey 2
+	 * @return o 0 o -1, -1 quando le posizioni non sono presenti nell'array e 0 quando avviene lo sca,bio
+	 */
 	public static int scambia(Tessera[]array,int pos1,int pos2)
 	{
 		Tessera s;
@@ -221,8 +285,12 @@ public class Lista implements Serializable
 			return 0;
 		}
 	}
-	
 
+	/**
+	 * Consente di copiare l'array tessera in un array copia.
+	 * @param array Array tessera
+	 * @return arrayCopia L'arrey copia
+	 */
 	private static Tessera[] copiaArray(Tessera[]array)
 	{
 		Tessera[]arrayCopia=new Tessera[array.length];
@@ -231,6 +299,11 @@ public class Lista implements Serializable
 		return arrayCopia;
 	}
 	
+	/**
+	 * Consente di ordinare per anzianità la lista.
+	 * @param array Array tessera
+	 * @return arrayCopia L'arrey di copia
+	 */
 	public static Tessera[] OrdinaAnzianita(Tessera[] array)
 	{
 		Tessera[] arrayCopia=copiaArray(array);
@@ -245,6 +318,36 @@ public class Lista implements Serializable
 		return arrayCopia;
 	}
 	
+	/**
+	 * Consente di visualizzare una tessera inserendo il nome eil cognome.
+	 * @param nome Il nome del tesserato
+	 * @param cognome Il cognome del tesserato
+	 */
+	public void visualizzaNome(String nome, String cognome)
+	{
+		Nodo p=head;
+		int contatore=0;
+		
+		while(p!=null)
+		{
+			if(p.getInfo().getNome().compareTo(nome)==0)
+			{
+				if(p.getInfo().getCognome().compareTo(cognome)==0)
+				{
+					System.out.println(p.getInfo().toString());
+					contatore++;
+				}
+			}
+			p=p.getLink();
+		}
+		
+	}
+	
+	/**
+	 * Consente di riurdinare una lista in ordine alfabetico.
+	 * @param tessera Array tessera
+	 * @return le informazioni del nodo p
+	 */
 	public static Tessera[] OrdinaAlfabetico(Tessera[] array)
 	{
 		Tessera[] arrayCopia=copiaArray(array);
@@ -262,6 +365,10 @@ public class Lista implements Serializable
 	
 	}
 	
+	/**
+	 * Consente di esportare la tessera della lista in formato CSV.
+	 * @param nomeFile Nome del file
+	 */
 	public void esportaCSV (String nomeFile) throws IOException, TesseraException
 	{
 		TextFile file= new TextFile (nomeFile,'W');
@@ -278,6 +385,11 @@ public class Lista implements Serializable
 		file.closeFile();
 	}
 	
+	/**
+	 * Consente di esportare la tessera della lista in formato CSV.
+	 * @param nomeFile Nome del file
+	 * @param posizione La posizione della tessera nella lista
+	 */
 	public void esportaCSVeliminati (String nomeFile, int posizione) throws IOException, TesseraException
 	{
 		TextFile file= new TextFile (nomeFile,'W');
@@ -291,7 +403,11 @@ public class Lista implements Serializable
 		
 		file.closeFile();
 	}
-/*
+
+	/**
+	 * Consente di importare la tessera di una lista in formato CSV.
+	 * @param nomeFile Nome del file
+	 */
 	public Lista importaCSV (String nomeFile) throws IOException, TesseraException
 	{
 		Lista lista=new Lista();
@@ -306,7 +422,7 @@ public class Lista implements Serializable
 				{
 					rigaLetta=file.fromFile();
 					elementiPersona=rigaLetta.split(";");
-					persona=new Tessera(Integer.parseInt(elementiPersona[0]),elementiPersona[1],elementiPersona[2],elementiPersona[3],elementiPersona[4],elementiPersona[5]);
+					persona=new Tessera(Integer.parseInt(elementiPersona[0]),elementiPersona[1],elementiPersona[2],elementiPersona[3],LocalDate.parse(elementiPersona[4]),elementiPersona[5]);
 					lista.inserisci(persona);
 				}
 				
@@ -321,7 +437,11 @@ public class Lista implements Serializable
 		
 			return lista;	
 	}
-	*/
+	
+	/**
+	 * Consente di salvare la lista serializzando.
+	 * @param nomeFile Nome del file
+	 */
 	public void salvaLista(String nomeFile) throws IOException
 	{
 		FileOutputStream file =new FileOutputStream(nomeFile);
@@ -331,6 +451,10 @@ public class Lista implements Serializable
 		file.close();
 	}
 	
+	/**
+	 * Consente di caricare la lista deserializzando.
+	 * @param nomeFile Nome del file
+	 */
 	public Lista caricaLista (String nomeFile) throws IOException, ClassNotFoundException
 	{
 		FileInputStream file=new FileInputStream(nomeFile);

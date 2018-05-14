@@ -31,7 +31,7 @@ public class Menu
 		do 
 		{
 			visualizza();
-			System.out.println("Scegli...");
+			System.out.println("Scegli..");
 			try 
 			{
 				voceScelta=tastiera.readInt();
@@ -42,7 +42,7 @@ public class Menu
 				
 			} catch (NumberFormatException e) 
 			{
-				System.out.println("Formato del dato non corretto.Reinserire");
+				System.out.println("Formato del dato non corretto. Reinserire");
 			} 
 			catch (IOException e) 
 			{
